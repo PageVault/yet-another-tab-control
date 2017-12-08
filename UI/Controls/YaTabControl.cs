@@ -395,11 +395,19 @@ namespace GrayIris.Utilities.UI.Controls
             {
                 if (value < 0 && Controls.Count > 0)
                 {
-                    throw new ArgumentException("Tried to set the property SelectedIndex to a negative number.");
+                    // set the index to the first tab
+                    yaSelectedIndex = 0;
+                    //throw new ArgumentException("Tried to set the property SelectedIndex to a negative number.");
                 }
                 else if (value >= Controls.Count)
                 {
-                    throw new IndexOutOfRangeException("Tried to set the property of the SelectedIndex to a value greater than the number of controls.");
+                    // set the index to the last tab
+                    yaSelectedIndex = Controls.Count - 1;
+                    //throw new IndexOutOfRangeException("Tried to set the property of the SelectedIndex to a value greater than the number of controls.");
+                }
+                else
+                {
+                    yaSelectedIndex = value;
                 }
                 TabChangingEventArgs tcea = new TabChangingEventArgs(yaSelectedIndex, value);
                 OnTabChanging(tcea);
@@ -407,14 +415,13 @@ namespace GrayIris.Utilities.UI.Controls
                 {
                     return;
                 }
-                yaSelectedIndex = value;
                 if (Controls.Count > 0)
                 {
                     foreach (Control ctrl in this.Controls)
                     {
                         ctrl.Visible = false;
                     }
-                    yaSelectedTab = (YaTabPage)Controls[value];
+                    yaSelectedTab = (YaTabPage)Controls[yaSelectedIndex];
                     yaSelectedTab.Visible = true;
                     PerformLayout();
                     InU();
